@@ -1,0 +1,24 @@
+{% load static %}
+
+<div class="top-bar">
+    <div class="menu" onclick="toggleClasse()">
+        <img src="{% static 'core/images/V4LOGO.png' %}" alt="Logo">
+        <p>☰ Menu</p>
+    </div>
+
+    <div class="profile-info">
+        <p>Olá, {{ request.session.nome }}!</p>
+    </div>
+</div>
+
+<div class="sidebar">
+    {% if request.session.admin %}
+        <a href="{% url 'gerenciar_usuarios' %}">Gerenciar Usuários</a>
+    {% endif %}
+    <a href="{% url 'home' %}">Pipefy - Cards</a>
+    <a href="{% url 'logout' %}" class="logout">Logout</a>
+    <a href="{% url 'atualizar_senha' %}" class="alterar-senha">Alterar Senha</a>
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+</div>
+
+<script src="{% static 'core/script/script.js' %}"></script>

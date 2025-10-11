@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V4 Lisboa&CO - Login</title>
+
+    <link rel="stylesheet" href="{% static 'core/style/style-login.css' %}">
+    <link rel="stylesheet" href="{% static 'core/style/style-criar-usuario.css' %}"> 
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div id="errorMessage">
+        <p>Opa! {{ erro }}</p>
+    </div>
+    <div class="tela" id="tela1" style="display: block;">
+        <div class="container">
+            <img src="{% static 'core/images/V4LOGO.png' %}" style="height:100px; width:100px" alt="Logo">
+            <h2>Lisboa&CO</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="login-field">
+                    <i class="fa fa-envelope"></i>
+                    <input type="text" placeholder="E-mail" name="email" required><br><br>
+                </div>
+
+                <div class="password-field">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" id="senha" placeholder="Senha" name="senha" required>
+                    <i id="toggleSenha" class="fa fa-eye toggle-eye"></i>
+                </div>
+
+                <button type="submit">LOGIN</button>
+            </form>
+
+            {% if erro %}
+            <script>
+                window.addEventListener("DOMContentLoaded", () => {
+                    const input = document.getElementById("errorMessage");
+                    if (input) {
+                        toggleClassTemporarily(input, "erro");
+                    }
+                });
+            </script>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="{% static 'core/script/script.js' %}"></script>
+    <script>
+        const senhaInput = document.getElementById("senha");
+        const toggleIcon = document.getElementById("toggleSenha");
+
+        toggleIcon.addEventListener("click", () => {
+            const isPassword = senhaInput.type === "password";
+            senhaInput.type = isPassword ? "text" : "password";
+            toggleIcon.classList.toggle("fa-eye");
+            toggleIcon.classList.toggle("fa-eye-slash");
+        });
+    </script>
+</body>
+</html>

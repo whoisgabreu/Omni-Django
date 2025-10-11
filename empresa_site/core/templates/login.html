@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>Login - Empresa</title>
+        
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'core/style/login-style.css' %}">
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Entrar</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="E-mail" required>
+            <input type="password" name="senha" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+
+        {% if erro %}
+            <p style="color:red">{{ erro }}</p>
+        {% endif %}
+    </div>
+</body>
+
+</html>
