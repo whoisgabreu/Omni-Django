@@ -25,19 +25,19 @@ def login_page(request):
         except Usuario.DoesNotExist:
             erro = "Usuário não encontrado"
     
-    return render(request, "login-new.html", {"erro": erro})
+    return render(request, "login - v4.html", {"erro": erro})
 
 
 # Logout
 def logout_view(request):
     request.session.flush()  # limpa a sessão
-    return redirect("/login/")
+    return redirect("/")
 
 # Decorator para páginas privadas
 def login_required(view_func):
     def wrapper(request, *args, **kwargs):
         if not request.session.get('usuario_id'):
-            return redirect("/login/")
+            return redirect("/")
         return view_func(request, *args, **kwargs)
     return wrapper
 

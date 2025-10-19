@@ -10,15 +10,34 @@ function mostrarTela(idTela) {
 }
 
 
-let cardsFiltrados = []; // ← Global
-let todosCards = [];  // Para armazenar todos os cards
+var cardsFiltrados = []; // ← Global
+var todosCards = [];  // Para armazenar todos os cards
 
+
+// async function carregarCards() {
+//   // const response = await fetch('/get_cards');
+//   const response = await fetch('https://n8n.v4lisboatech.com.br/webhook/pipefy-cards');
+//   todosCards = await response.json();
+//   cardsFiltrados = todosCards;
+//   renderizarCards(todosCards);
+//   await prepararFiltros(); // <- aqui você popula os dropdowns
+// }
 
 async function carregarCards() {
-  const response = await fetch('/get_cards');
-  todosCards = await response.json();
-  cardsFiltrados = todosCards;
-  renderizarCards(todosCards);
+  // const response = await fetch('/get_cards');
+  const response = await fetch('https://n8n.v4lisboatech.com.br/webhook/pipefy-cards');
+  const data = await response.json();
+  
+  console.log(data["cards"]);  // Verifique o que está sendo retornado pela requisição
+
+  if (Array.isArray(data["cards"])) {
+    todosCards = data["cards"];
+    cardsFiltrados = todosCards;
+    renderizarCards(todosCards);
+  } else {
+    console.error("A resposta não é um array", data["cards"]);
+  }
+
   await prepararFiltros(); // <- aqui você popula os dropdowns
 }
 
@@ -43,19 +62,19 @@ function renderizarCards(cards) {
       <div class="card-content" role="button" onclick="mostrarDetalhesDoCard(${card.id})">
         <div class="card-info">
         
-          <p><b>• CNPJ:</b> ${card["Cliente - CNPJ"] || "-"}</p>
+          <p><b>• CNPJ:</b> ${card["cliente_cnpj"] || "-"}</p>
           <p><b>• Cliente:</b> ${card["title"] || "-"}</p>
-          <p><b>• Contrato</b>: ${card["Contrato - Modelo de Pagamento"] || "-"}</p>
-          <p><b>• Data Início:</b> ${card["Data - Início de Projeto"] || "-"}</p>
-          <p><b>• Data Fim</b>: ${card["Data Fim - Serviços"] || "-"}</p>
-          <p><b>• Squad</b>: ${card["Squad Atribuída"] || "-"}</p>
-          <p><b>• Fase Atual</b>: ${card["fase"] || "-"}</p>
+
 
 
         </div>
       </div>
             `;
-    
+              // <p><b>• Contrato</b>: ${card["Contrato - Modelo de Pagamento"] || "-"}</p>
+          // <p><b>• Data Início:</b> ${card["Data - Início de Projeto"] || "-"}</p>
+          // <p><b>• Data Fim</b>: ${card["Data Fim - Serviços"] || "-"}</p>
+          // <p><b>• Squad</b>: ${card["Squad Atribuída"] || "-"}</p>
+          // <p><b>• Fase Atual</b>: ${card["fase"] || "-"}</p>
     container.appendChild(cardElement);
   });
 }
@@ -137,9 +156,9 @@ async function renderizarLista(lista, selectId) {
 }
 
 async function prepararFiltros() {
-  const squads = await carregarLista(todosCards, "Squad Atribuída");
-  const unidades = await carregarLista(todosCards, "Unidade Atribuída");
-  const pagamentos = await carregarLista(todosCards, "Contrato - Modelo de Pagamento");
+  const squads = await carregarLista(todosCards, "squad_atribuida");
+  const unidades = await carregarLista(todosCards, "unidade_atribuida");
+  const pagamentos = await carregarLista(todosCards, "contrato_modelo_de_pagamento");
   const fases = await carregarLista(todosCards, "fase");
 
   await renderizarLista(squads, "filtroSquad");
@@ -207,14 +226,14 @@ function aplicarFiltro() {
   let filtrados = todosCards.filter(card => {
     const matchesTexto =
       (card["title"] && card["title"].toLowerCase().includes(termo)) ||
-      (card["id"] && card["id"].toString().includes(termo)) ||
-      (card["Cliente - CNPJ"] && card["Cliente - CNPJ"].toLowerCase().includes(termo)) ||
-      (card["Squad Atribuída"] && card["Squad Atribuída"].toLowerCase().includes(termo)) ||
-      (card["Unidade Atribuída"] && card["Unidade Atribuída"].toLowerCase().includes(termo));
+      (card["card_id"] && card["card_id"].toString().includes(termo)) ||
+      (card["cliente_cnpj"] && card["cliente_cnpj"].toLowerCase().includes(termo)) ||
+      (card["squad_atribuida"] && card["squad_atribuida"].toLowerCase().includes(termo)) ||
+      (card["unidade_atribuida"] && card["unidade_atribuida"].toLowerCase().includes(termo));
 
-    const matchesSquad = !filtroSquad || (card["Squad Atribuída"] && card["Squad Atribuída"].toLowerCase().includes(filtroSquad));
-    const matchesUnidade = !filtroUnidade || (card["Unidade Atribuída"] && card["Unidade Atribuída"].toLowerCase().includes(filtroUnidade));
-    const matchesPagamento = !filtroPagamento || (card["Contrato - Modelo de Pagamento"] && card["Contrato - Modelo de Pagamento"].toLowerCase().includes(filtroPagamento));
+    const matchesSquad = !filtroSquad || (card["squad_atribuida"] && card["squad_atribuida"].toLowerCase().includes(filtroSquad));
+    const matchesUnidade = !filtroUnidade || (card["unidade_atribuida"] && card["unidade_atribuida"].toLowerCase().includes(filtroUnidade));
+    const matchesPagamento = !filtroPagamento || (card["contrato_modelo_de_pagamento"] && card["contrato_modelo_de_pagamento"].toLowerCase().includes(filtroPagamento));
     const matchesFase = !filtroFase || (card["fase"] && card["fase"].toLowerCase().includes(filtroFase));
 
     return matchesTexto && matchesSquad && matchesUnidade && matchesPagamento && matchesFase;
@@ -230,8 +249,8 @@ function aplicarFiltro() {
       }
 
       if (criterio === "data") {
-        const dataA = parseDataSeguro(a["Data - Início de Projeto"]);
-        const dataB = parseDataSeguro(b["Data - Início de Projeto"]);
+        const dataA = parseDataSeguro(a["data_venda"]);
+        const dataB = parseDataSeguro(b["data_venda"]);
         if (dataA && dataB) {
           return direcao === "asc" ? dataA - dataB : dataB - dataA;
         }
