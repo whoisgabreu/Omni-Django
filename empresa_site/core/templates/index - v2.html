@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, minimum-scale=1.0">
+  <title>V4 Lisboa&CO - Cards</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="{% static 'core/style/style-home.css' %}"> -->
+  <link rel="stylesheet" href="{% static 'core/style/style-home - v2.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="{% static 'core/script/script - v2.js' %}" defer></script>
+</head>
+<body>
+
+  <div class="main-container">
+
+    <aside class="sidebar">
+      <button id="cards-button" data-target="cards"><i class="fa-solid fa-house"></i></button>
+      <button id="dashboards-button" data-target="dashboard"><i class="fa-solid fa-chart-simple"></i></button>
+      <button id="configs-button" data-target="configs"><i class="fa-solid fa-gears"></i></button>
+    </aside>
+  
+    <main class="main-frame">
+
+      <!-- SECTION CARDS -->
+      <section id="cards" class="page active">
+        {% include 'components/cards.html' %}
+      </section>
+
+      <!-- SECTION DASHBOARD -->
+      <section id="dashboard" class="page">Dashboards PowerBI aqui</section>
+
+      <!-- SECTION CONFIGS -->
+      <section id="configs" class="page">
+        {% include 'components/configs.html' %}
+      </section>
+    </main>
+
+  </div>
+
+
+
+</body>
+</html>

@@ -52,7 +52,7 @@ def dashboard(request):
 @login_required
 def home(request):
     usuario = Usuario.objects.get(id=request.session['usuario_id'])
-    return render(request, "index.html", {"usuario": usuario})
+    return render(request, "index - v2.html", {"usuario": usuario})
 
 # Atualizar senha
 @login_required

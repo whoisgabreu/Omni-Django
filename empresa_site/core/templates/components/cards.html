@@ -1,0 +1,63 @@
+<div class="main-content-cards">
+
+    <div id="tela1" class="tela">
+    <h1 class="title-tela">Cards Pipefy</h1>
+
+    <!-- HEADER COM FILTROS -->
+    <div id="header">
+
+        <input type="text" id="searchInput" class="search" placeholder="Pesquisar ID, Título ou CNPJ">
+
+        <select id="ordenarPor">
+        <option value="">Ordenar por...</option>
+        <option value="titulo_asc">Título (A-Z)</option>
+        <option value="titulo_desc">Título (Z-A)</option>
+        <option value="data_asc">Mais antigo</option>
+        <option value="data_desc">Mais recente</option>
+        </select>
+
+        <select id="filtroSquad">
+        <option value="">Todas Squads</option>
+        </select>
+
+        <select id="filtroUnidade">
+        <option value="">Todas Unidades</option>
+        </select>
+
+        <select id="filtroPagamento">
+        <option value="">Todos Modelos de Pagamento</option>
+        </select>
+
+        <select id="filtroFase">
+        <option value="">Todas Fases</option>
+        </select>
+
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="container">
+
+        <div class="cards-frame" id="cards-frame">
+        <!-- Cards inseridos aqui por Javascript -->
+        </div>
+
+        <div class="details-frame" id="details-frame">
+        <p>Selecione um card à esquerda para ver os detalhes</p>
+        </div>
+
+        <div class="resultados">
+        <p id="contador-resultados"></p>
+
+        <button id="download-xlsx" onclick="exportarParaExcel(cardsFiltrados)">
+            <i class="fa-solid fa-download"></i> Download
+        </button>
+        </div>
+
+    </div> <!-- FIM CONTAINER -->
+
+    </div> <!-- FIM TELA1 -->
+
+</div> <!-- FIM MAIN-CONTENT -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'core/style/cards/cards-screen.css' %}">
+<script src="{% static 'core/script/script.js' %}" defer></script>
